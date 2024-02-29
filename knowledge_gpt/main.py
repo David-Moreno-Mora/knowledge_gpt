@@ -34,7 +34,7 @@ bootstrap_caching()
 
 #sidebar()
 
-openai_api_key = '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'
+openai_api_key = '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'
 
 
 if not openai_api_key:
