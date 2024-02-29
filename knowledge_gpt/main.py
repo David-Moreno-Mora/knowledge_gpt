@@ -34,7 +34,7 @@ bootstrap_caching()
 
 #sidebar()
 
-openai_api_key = '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'
+openai_api_key = st.secrets["OPENAI_KEY"]
 
 
 if not openai_api_key:
