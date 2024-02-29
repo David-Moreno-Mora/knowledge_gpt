@@ -27,14 +27,14 @@ MODEL_LIST = ["gpt-3.5-turbo", "gpt-4"]
 # MODEL_LIST.insert(0, "debug")
 
 st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
-st.header("📖KnowledgeGPT")
+st.header("📖Asistente de Análisis de Licitaciones")
 
 # Enable caching for expensive functions
 bootstrap_caching()
 
-sidebar()
+#sidebar()
 
-openai_api_key = st.session_state.get("OPENAI_API_KEY")
+openai_api_key = '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'
 
 
 if not openai_api_key:
@@ -45,16 +45,16 @@ if not openai_api_key:
 
 
 uploaded_file = st.file_uploader(
-    "Upload a pdf, docx, or txt file",
+    "Craga un pdf, docx, or txt",
     type=["pdf", "docx", "txt"],
-    help="Scanned documents are not supported yet!",
+    help="Documentación de la licitación",
 )
 
-model: str = st.selectbox("Model", options=MODEL_LIST)  # type: ignore
+model: str = st.selectbox("Modelo", options=MODEL_LIST)  # type: ignore
 
-with st.expander("Advanced Options"):
-    return_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
-    show_full_doc = st.checkbox("Show parsed contents of the document")
+with st.expander("Opciones Avanzadas"):
+    return_all_chunks = st.checkbox("Muestra todos los fragmentos recuperados de la búsqueda vectorial.")
+    show_full_doc = st.checkbox("Muestra el contenido analizado del documento.")
 
 
 if not uploaded_file:
@@ -75,7 +75,7 @@ if not is_open_ai_key_valid(openai_api_key, model):
     st.stop()
 
 
-with st.spinner("Indexing document... This may take a while⏳"):
+with st.spinner("Indexando documento... Esto puede tomar unos minutos⏳"):
     folder_index = embed_files(
         files=[chunked_file],
         embedding=EMBEDDING if model != "debug" else "debug",
@@ -84,8 +84,8 @@ with st.spinner("Indexing document... This may take a while⏳"):
     )
 
 with st.form(key="qa_form"):
-    query = st.text_area("Ask a question about the document")
-    submit = st.form_submit_button("Submit")
+    query = st.text_area("Pregunta acerca del documento:")
+    submit = st.form_submit_button("Enviar")
 
 
 if show_full_doc:
@@ -110,11 +110,11 @@ if submit:
     )
 
     with answer_col:
-        st.markdown("#### Answer")
+        st.markdown("#### Respuesta:")
         st.markdown(result.answer)
 
     with sources_col:
-        st.markdown("#### Sources")
+        st.markdown("#### Fuentes:")
         for source in result.sources:
             st.markdown(source.page_content)
             st.markdown(source.metadata["source"])
